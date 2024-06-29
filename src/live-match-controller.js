@@ -16,14 +16,19 @@ const live_match_controller = async (req, res) => {
             $(children).each(function () {
                 const series = $(this); // Series Page
                 const series_name = series.find('h2.cb-lv-scr-mtch-hdr > a').text();
-                const series_id = series.find('h2.cb-lv-scr-mtch-hdr > a').attr('href');
+                const series_id_Href = series.find('h2.cb-lv-scr-mtch-hdr > a').attr('href') || "/cricket-series/80629/south-africa-women-tour-of-india-2024";
+
+                const seriesIdPart = series_id_Href.split("cricket-series/")[1];
+                const series_id = seriesIdPart.split("/")[0];
 
                 let matches_array = [];
                 $(series).find('div.cb-mtch-lst').each(function () {
                     const matches = $(this); // Matches Page
 
                     const team = matches.find('h3.cb-lv-scr-mtch-hdr > a').text();
-                    const matchId = matches.find('h3.cb-lv-scr-mtch-hdr > a').attr('href');
+                    const matchIdHref = matches.find('h3.cb-lv-scr-mtch-hdr > a').attr('href');
+                    const matchId = matchIdHref.split("live-cricket-scores/")[1].split("/")[0];
+
                     const matchStage = matches.find('div.cb-schdl > div > span.text-gray').text();
                     const date = matches.find('div.text-gray').html();
 

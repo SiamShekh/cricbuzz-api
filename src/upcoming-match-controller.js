@@ -14,11 +14,18 @@ const upcoming_match_controller = async (req, res) => {
             const children = $(this);
 
             const seriesName = children.find('div.cb-rank-hdr > h2 > a').text();
+            const seriesHref = children.find('div.cb-rank-hdr > h2 > a').attr('href')  || "/cricket-series/80629/south-africa-women-tour-of-india-2024";
+
+            const seriesIdPart = seriesHref.split("cricket-series/")[1];
+            const series_id = seriesIdPart.split("/")[0];
+
             let match = [];
 
             children.find('div.cb-rank-hdr > div > div > div').each(function () {
                 const team = $(this).find('h3 > a').text();
-                const matchId = $(this).find('h3 > a').attr('href');
+                const matchIdHref = $(this).find('h3 > a').attr('href');
+                const matchId = matchIdHref.split("live-cricket-scores/")[1].split("/")[0];
+
                 const matchStage = $(this).find('span.text-gray').first().text().trim();
                 const venu = $(this).find('div.text-gray > span.text-gray').text().split("at ")[1];
                 const date = $(this).find('div.text-gray').html();
@@ -63,7 +70,7 @@ const upcoming_match_controller = async (req, res) => {
             })
 
             if (seriesName) {
-                series_array.push({ seriesName, match });
+                series_array.push({ seriesName, series_id, match });
             }
 
         })
